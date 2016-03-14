@@ -1,0 +1,24 @@
+<message style="margin-bottom:2%;" class="text-center"></message>
+<form role="form" class="form-horizontal" method="POST" ng-controller="commentcontroller">
+	<div class="form-group">
+    <!--label class="control-label col-sm-2" for="name">Name:</label-->
+    <div class="col-sm-12">
+      <input type="text" class="form-control" id="name" placeholder="Enter your name" ng-model="comment.name">
+    </div>
+  </div>
+  <div class="form-group">
+    <!--label class="control-label col-sm-2" for="pwd">Subject:</label-->
+    <div class="col-sm-12"> 
+    
+      <input type="text" class="form-control input-lg" id="comment" placeholder="Say What you have to Say" ng-model="comment.comment">
+    </div>
+  </div>
+ 
+  <div class="form-group"> 
+    <div class="col-sm-offset-10 col-sm-12">
+      <button type="button"  id="comment"  ng-click="postComment()" class="btn btn-primary">Comment</button>
+    </div>
+  </div>
+</form>
+<hr/>
+

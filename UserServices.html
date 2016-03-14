@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="Services">
+<head>
+  <title>Angular JS services</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+   <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+   <script>
+   var app = angular.module('Services', []);
+
+   app.service('UserService', function() {
+
+   		var uid = 1;
+   		var contacts = [{
+   			id: 0,
+   			'name': 'Aditya V',
+   			'phone': '408-872-2112',
+   			'email': 'ramaditya29@gmail.com'
+   		}];
+   		this.list = function() {
+   			return contacts;
+   		};
+
+   		this.save = function(contact) {
+   			if(contact.id == null) {
+   				contact.id = uid++;
+   				contacts.push(contact);
+   			}
+   			else{
+   				for(i in contacts){
+   					if(contacts[i].id == contact.id)
+   						contacts[i] = contact;
+   				}
+   			}
+   		};
+
+   		this.deleteContact = function(id) {
+   			for(i in contacts){
+   				if(contacts[i].id == id)
+   					contacts.splice(i,1);
+   			}
+   		};
+
+   		this.edit = function(id) {
+   			for(i in contacts) {
+   				if(contacts[i].id == id)
+   					return contacts[i];
+   			}
+   		};
+   });
+   app.controller('DataCtrl', function($scope, UserService) {
+   		$scope.contacts = UserService.list();
+
+   		$scope.saveContact = function() {
+   			UserService.save($scope.newcontact);
+   			$scope.newcontact = {};
+   		};
+
+   		$scope.deleteContact = function(id) {
+   			UserService.deleteContact(id);
+   		};
+
+   		$scope.editContact = function(id) {
+   			$scope.newcontact = UserService.edit(id);
+   		};
+   });
+
+   </script>
+</head>
+<body >
+
+<div class="container" ng-controller='DataCtrl'>
+  
+  <div class="jumbotron">
+ 	 <form class="form-horizontal" method="POST" type="form">
+ 	 	<div class="form-group">
+ 	 	 	<label class="control-label">Name</label>
+ 	 	 	<input type="text" class="form-control " ng-model="newcontact.name" />
+ 	 	</div>
+ 	 	<div class="form-group">
+ 	 	 	<label class="control-label">Email</label>
+ 	 	 	<input type="email" class="form-control " ng-model="newcontact.email" />
+ 	 	</div>
+ 	 	<div class="form-group">
+ 	 	 	<label class="control-label">Phone</label>
+ 	 	 	<input type="text" class="form-control " ng-model="newcontact.phone" />
+ 	 	</div>
+ 	 	<input type="hidden" ng-model="newcontact.id" />
+ 	 	<input type="button" class="btn btn-primary" value="Submit" ng-click="saveContact()" />
+ 	 </form>
+  </div>
+
+  <table class="table table-bordered table-striped table-hover">
+  	<thead>
+  		<tr>
+  			<th>Name</th>
+  			<th>Email</th>
+  			<th>Phone</th>
+  			<th></th>
+  		</tr>
+  	</thead>
+  	<tbody>
+  		<tr ng-repeat="contact in contacts">
+  			<td>{{contact.name}}</td>
+  			<td>{{contact.email}}</td>
+  			<td>{{contact.phone}}</td>
+  			<td><a href="#" ng-click="editContact(contact.id)">edit </a>| <a href="#" ng-click="deleteContact(contact.id)"> delete</td>
+  		</tr>
+  	</tbody>
+  </table>
+</div>
+
+</body>
+</html>

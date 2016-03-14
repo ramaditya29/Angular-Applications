@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html ng-app="myapp">
+  <head>
+    <meta charset="utf-8">
+    <title>Services</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.1/angular.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.2.10/angular-route.min.js"></script>
+    <script>
+      var app = angular.module('myapp', ['ngRoute']);
+      app.service('MyService',function() {
+        var users = ['Aditya','Ravi', 'Rajesh'];
+        this.getUsers = function() {
+          return users;
+        };
+        this.getUser = function(username){
+          console.log(username);
+          if(users.indexOf(username) >= 0 )
+          {
+            alert("userfound");
+            console.log(users.indexOf(username));
+          }
+          else
+            alert("user not found");
+        };
+      });
+      app.factory('SimpleFactory' , function() {
+        return {
+          listData: function(){
+            return "Aditya";
+          }
+        };
+      });
+      app.controller('MyController', function($scope, MyService){
+        $scope.names = MyService.getUsers();
+
+        $scope.checkUser = function(username){
+          MyService.getUser(username);
+        };
+      });
+    </script>
+  </head>
+  <body ng-controller='MyController'>
+   <ul>
+    <li ng-repeat="name in names">{{name}}</li>
+   </ul>
+  <input type="text"  ng-model="name" /><input type="button" ng-click="checkUser(name)" value="Check" /> 
+  </body>
+</html>
